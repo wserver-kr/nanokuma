@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2022-2026 WSERVER
+
+.idea/
+.vscode/
+
+dist/
+
+config.toml
+!config.sample.toml
+
+# binaries
+nanokuma
+
+# macOS file cache
+.DS_Store

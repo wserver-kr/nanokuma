@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+/*
+ * nanokuma
+ * Copyright (C) 2022-2026 WSERVER
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
+package webserver
+
+import (
+	"github.com/gin-gonic/gin"
+)
+
+func (m *WebServerModule) RouteAPI(app *gin.Engine) {
+	var api *gin.RouterGroup
+	api = app.Group("/api")
+
+	api.POST("/agent/check", AgentCheck)
+	api.GET("/agent", AgentGet)
+	api.GET("/agents", AgentQuery)
+	api.PUT("/agent/authorize", AgentAuthorize)
+	api.DELETE("/agent/delete", AgentDelete)
+}

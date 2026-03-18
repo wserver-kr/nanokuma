@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2022-2026 WSERVER
+
+go 1.25.7
+
+use (
+	./agent
+	./server
+	./shared
+)
