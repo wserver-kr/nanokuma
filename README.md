@@ -4,6 +4,8 @@
 
 Lightweight CI/CD system for WSERVER
 
+[Origin mirrored source](https://git.wh64.net/wserver/nanokuma)
+
 <br />
 
 
