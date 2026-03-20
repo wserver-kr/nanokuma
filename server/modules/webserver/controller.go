@@ -28,6 +28,6 @@ func (m *WebServerModule) RouteAPI(app *gin.Engine) {
 
 	// Jobs
 	api.POST("/job", JobCreate)
-
+	api.GET("/job", JobRead)
 	api.DELETE("/job", JobDelete)
 }
