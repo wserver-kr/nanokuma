@@ -144,7 +144,81 @@ func JobRead(ctx *gin.Context) {
 	})
 }
 
-func JobQuery(ctx *gin.Context) {}
+func JobQuery(ctx *gin.Context) {
+	var err error
+	var jobs []job.Job
+	var rp repo.RepoModule
+	var agent *agent.AgentData
+	var projectID, agentID string
+
+	projectID = ctx.Query("agent_id")
+	if projectID == "" {
+		ctx.JSON(400, gin.H{
+			"ok":      0,
+			"message": "\"job_id\" query must be contained",
+		})
+		return
+	}
+
+	agentID = ctx.Query("agent_id")
+	if agentID == "" {
+		ctx.JSON(400, gin.H{
+			"ok":      0,
+			"message": "\"agent_id\" query must be contained",
+		})
+		return
+	}
+
+	if repo.Repo == nil {
+		ctx.JSON(500, gin.H{
+			"ok":      0,
+			"message": "\"repo\" service not served! please contact server administrator.",
+		})
+		return
+	}
+
+	rp = *repo.Repo
+
+	agent, err = rp.GetAgent(projectID)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"ok":      0,
+			"message": "failed to get the agent information",
+		})
+		return
+	}
+
+	if !agent.Authorized {
+		ctx.JSON(403, gin.H{
+			"ok":      0,
+			"message": "the agent is not authorized",
+		})
+		return
+	}
+
+	jobs, err = rp.GetJobs(projectID)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"ok":      0,
+			"message": "failed to get the job information",
+		})
+		return
+	}
+
+	if len(jobs) == 0 {
+		ctx.JSON(404, gin.H{
+			"ok":      0,
+			"message": "jobs not found by project id " + projectID,
+		})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"ok":      1,
+		"message": "the job found",
+		"data":    jobs,
+	})
+}
 
 func JobUpdateStatus(ctx *gin.Context) {}
 
