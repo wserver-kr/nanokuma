@@ -79,11 +79,11 @@ func JobQuery(ctx *gin.Context) {
 	var projectID string
 	var rp repo.RepoModule
 
-	projectID = ctx.Query("agent_id")
+	projectID = ctx.Query("project_id")
 	if projectID == "" {
 		ctx.JSON(400, gin.H{
 			"ok":      0,
-			"message": "\"job_id\" query must be contained",
+			"message": "\"project_id\" query must be contained",
 		})
 		return
 	}
