@@ -23,7 +23,7 @@ func ProjectCreate(ctx *gin.Context) {
 
 	rp = *repo.Repo
 
-	id, err = rp.ProjectCreate(payload)
+	id, err = rp.CreateProject(payload)
 	if err != nil {
 		return
 	}

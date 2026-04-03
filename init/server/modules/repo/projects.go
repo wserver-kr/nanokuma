@@ -20,7 +20,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (m *RepoModule) ProjectCreate(payload project.ProjectPayload) (string, error) {
+func (m *RepoModule) CreateProject(payload project.ProjectPayload) (string, error) {
 	var err error
 	var id string
 	var query string
@@ -38,7 +38,7 @@ func (m *RepoModule) ProjectCreate(payload project.ProjectPayload) (string, erro
 	return id, nil
 }
 
-func (m *RepoModule) ProjectGet(id string) (*project.Project, error) {
+func (m *RepoModule) GetProject(id string) (*project.Project, error) {
 	var err error
 	var query string
 	var rows *sql.Rows
@@ -65,7 +65,7 @@ func (m *RepoModule) ProjectGet(id string) (*project.Project, error) {
 	return &data, nil
 }
 
-func (m *RepoModule) ProjectUpdateRepoURL(id string, repoURL string) error {
+func (m *RepoModule) UpdateProjectRepoURL(id string, repoURL string) error {
 	var err error
 	var query string
 	var conf = config.Get.Database
@@ -80,7 +80,7 @@ func (m *RepoModule) ProjectUpdateRepoURL(id string, repoURL string) error {
 	return nil
 }
 
-func (m *RepoModule) ProjectDelete(id string) error {
+func (m *RepoModule) DeleteProject(id string) error {
 	var err error
 	var query string
 	var conf = config.Get.Database
