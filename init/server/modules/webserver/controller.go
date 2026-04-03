@@ -36,4 +36,5 @@ func (m *WebServerModule) RouteAPI(app *gin.Engine) {
 
 	// Projects
 	api.POST("/project", ProjectCreate)
+	api.GET("/project", ProjectRead)
 }

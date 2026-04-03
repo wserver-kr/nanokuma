@@ -28,10 +28,45 @@ func ProjectCreate(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, gin.H{"ok": 1, "message": "project created!", "id": id})
+	ctx.JSON(200, gin.H{
+		"ok":      1,
+		"message": "project created!",
+		"id":      id,
+	})
 }
 
-func ProjectRead(ctx *gin.Context) {}
+func ProjectRead(ctx *gin.Context) {
+	var err error
+	var id string
+	var rp repo.RepoModule
+	var project *project.Project
+
+	id = ctx.Query("project_id")
+	if id == "" {
+		ctx.JSON(400, gin.H{
+			"ok":      0,
+			"message": "\"job_id\" query must be contained",
+		})
+		return
+	}
+
+	rp = *repo.Repo
+
+	project, err = rp.GetProject(id)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"ok":      0,
+			"message": "failed to get the project information.",
+		})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"ok":      1,
+		"message": "the project found",
+		"data":    project,
+	})
+}
 
 func ProjectUpdateRepoURL(ctx *gin.Context) {}
 
