@@ -11,6 +11,86 @@
 
 package repo
 
-// func (m *RepoModule) AddProject() error {
-// 	var err error
-// }
+import (
+	"database/sql"
+	"fmt"
+
+	"git.wh64.net/wserver/nanokuma/include/project"
+	"git.wh64.net/wserver/nanokuma/server/config"
+	"github.com/google/uuid"
+)
+
+func (m *RepoModule) ProjectCreate(payload project.ProjectPayload) (string, error) {
+	var err error
+	var id string
+	var query string
+	var conf = config.Get.Database
+
+	id = uuid.NewString()
+
+	query = fmt.Sprintf("INSERT INTO %sprojects (id, repo_url) VALUES (?, ?);", conf.Prefix)
+
+	_, err = m.DB.Exec(query, id, payload.RepoURL)
+	if err != nil {
+		return "", err
+	}
+
+	return id, nil
+}
+
+func (m *RepoModule) ProjectGet(id string) (*project.Project, error) {
+	var err error
+	var query string
+	var rows *sql.Rows
+	var data project.Project
+	var conf = config.Get.Database
+
+	query = fmt.Sprintf("SELECT id, repo_url, created_at, updated_at FROM %sprojects WHERE id = ?;", conf.Prefix)
+
+	rows, err = m.DB.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if !rows.Next() {
+		err = fmt.Errorf("project id '%s' is not exists", id)
+		return nil, err
+	}
+
+	err = rows.Scan(&data.ID, &data.RepoURL, &data.CreatedAt, &data.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
+
+func (m *RepoModule) ProjectUpdateRepoURL(id string, repoURL string) error {
+	var err error
+	var query string
+	var conf = config.Get.Database
+
+	query = fmt.Sprintf("UPDATE %sprojects SET repo_url = ?, updated_at = NOW() WHERE id = ?;", conf.Prefix)
+
+	_, err = m.DB.Exec(query, repoURL, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RepoModule) ProjectDelete(id string) error {
+	var err error
+	var query string
+	var conf = config.Get.Database
+
+	query = fmt.Sprintf("DELETE FROM %sprojects WHERE id = ?;", conf.Prefix)
+
+	_, err = m.DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
