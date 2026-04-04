@@ -33,4 +33,10 @@ func (m *WebServerModule) RouteAPI(app *gin.Engine) {
 	api.GET("/jobs", middleware.CheckAgentIsAuthorized(), JobQuery)
 	api.PATCH("/job", middleware.CheckAgentIsAuthorized(), JobUpdateStatus)
 	api.DELETE("/job", middleware.CheckAgentIsAuthorized(), JobDelete)
+
+	// Projects
+	api.POST("/project", ProjectCreate)
+	api.GET("/project", ProjectRead)
+	api.PATCH("/project", ProjectUpdateRepoURL)
+	api.DELETE("/project", ProjectDelete)
 }
