@@ -52,6 +52,8 @@ func (m *RepoModule) GetProject(id string) (*project.Project, error) {
 		return nil, err
 	}
 
+	defer rows.Close()
+
 	if !rows.Next() {
 		err = fmt.Errorf("project id '%s' is not exists", id)
 		return nil, err
