@@ -38,4 +38,5 @@ func (m *WebServerModule) RouteAPI(app *gin.Engine) {
 	api.POST("/project", ProjectCreate)
 	api.GET("/project", ProjectRead)
 	api.PATCH("/project", ProjectUpdateRepoURL)
+	api.DELETE("/project", ProjectDelete)
 }

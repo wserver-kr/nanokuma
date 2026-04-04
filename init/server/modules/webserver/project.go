@@ -95,4 +95,35 @@ func ProjectUpdateRepoURL(ctx *gin.Context) {
 	}
 }
 
-func ProjectDelete(ctx *gin.Context) {}
+func ProjectDelete(ctx *gin.Context) {
+	var err error
+	var id string
+	var rp repo.RepoModule
+
+	id = ctx.Query("project_id")
+	if id == "" {
+		ctx.JSON(400, gin.H{
+			"ok":      0,
+			"message": "\"job_id\" query must be contained",
+		})
+		return
+	}
+
+	rp = *repo.Repo
+
+	err = rp.DeleteProject(id)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"ok":      0,
+			"message": "failed to delete project",
+			"id":      id,
+		})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"ok":      1,
+		"message": "project deleted",
+		"id":      id,
+	})
+}
